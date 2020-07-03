@@ -14,6 +14,27 @@
 Standard console input to start with.
 		-- desc
 
+	## 200703 0759 cst
+		comment author : Nicholas Prado
+		-- comment
+		State machine:
+		`
+		start -> choose wf folder
+		choose wf folder -> choose jar in folder [multiple jar]
+		choose wf folder -> choose jre [back]
+		choose wf folder -> choose wf folder [bad input]
+		choose wf folder -> choose config [one jar]
+		choose jre -> choose wf folder
+		choose jar in folder -> choose wf folder
+		choose jar in folder -> choose config
+		choose config -> choose jar in folder
+		choose config -> choose wf folder
+		choose config -> end
+		`
+
+		I'm inclined to provide a collection to a given state, rather than a more specific collection. That way, the presentation mechanism can choose its own mapping between collection elements and input.
+		-- comment
+
 	>## yyMMdd hhMM zzz
 		>comment author : 
 		>-- comment
