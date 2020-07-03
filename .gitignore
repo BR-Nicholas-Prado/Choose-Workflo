@@ -1,0 +1,9 @@
+/bin/
+/bin_of_tests/
+/build/
+/gradle/
+/target/
+/.idea/
+.classpath
+.project
+.settings

@@ -1,0 +1,20 @@
+
+= choose_workflo Changelog
+
+== Unreleased
+
+=== Added
+
+* scanner input for choosing folders
+* eclipse public license
+
+=== Changed
+
+* 
+
+=== Removed
+
+* 
+
+== [0.0] - 20-0-
+
