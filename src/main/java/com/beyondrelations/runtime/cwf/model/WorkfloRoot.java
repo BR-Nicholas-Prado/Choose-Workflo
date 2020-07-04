@@ -23,9 +23,15 @@ public class WorkfloRoot
 	}
 
 
+	public Path getJarFolder()
+	{
+		return jarFileName.getParent();
+	}
+
+
 	public Path getJarFileName()
 	{
-		return jarFileName;
+		return jarFileName.getFileName();
 	}
 
 

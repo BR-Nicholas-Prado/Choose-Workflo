@@ -1,7 +1,9 @@
 /* see ../../../../../LICENSE for release details */
 package com.beyondrelations.runtime.cwf.model;
 
+import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
 
@@ -46,7 +48,8 @@ public class WorkfloSession
 
 	public Path getWorkfloDbInformation()
 	{
-		return workfloDbInformation;
+		return Paths.get( "config"+ File.separator
+				+ workfloDbInformation.getFileName() );
 	}
 
 }

@@ -5,8 +5,7 @@
 
 === Added
 
-* scanner input for choosing folders
-* eclipse public license
+* 
 
 === Changed
 
@@ -16,5 +15,25 @@
 
 * 
 
-== [0.0] - 20-0-
+== [1.0] - 20-07-04
+
+=== Added
+
+* scanner input for choosing folders
+* eclipse public license
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

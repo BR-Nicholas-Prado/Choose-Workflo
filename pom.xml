@@ -18,7 +18,7 @@
 		choose_workflo
 		</artifactId>
 	<version>
-		0.0
+		1.0
 		</version>
 	<packaging>
 		jar
@@ -263,7 +263,7 @@
 								true
 								</addClasspath>
 							<mainClass>
-								com.beyondelations.runtime.xxxxxxx
+								com.beyondelations.runtime.cwf.Initialization
 								</mainClass>
 							</manifest>
 						<manifestEntries>
@@ -293,14 +293,14 @@
 						java
 						</executable>
 					<mainClass>
-						com.beyondelations.runtime.xxxxxx
+						com.beyondelations.runtime.cwf.Initialization
 						</mainClass>
 					<arguments>
 						<argument>
 							-classpath
 							</argument>
 						<argument>
-							com.beyondelations.runtime.xxxxxxxx
+							com.beyondelations.runtime.cwf.Initialization
 							</argument>
 					</arguments>
 					</configuration>
@@ -314,21 +314,21 @@
 		choose_workflo
 		</name>
 	<description>
-		xxxx
+		Select workflo jars and configs on disk, rather than hardcoded in file or as shortcuts
 		</description>
 	<url>
 		xxxxx
 		</url>
 	<inceptionYear>
-		20xxxx
+		2020
 		</inceptionYear>
 	<licenses>
 		<license>
 			<name>
-				xxxx
+				Eclipse Public v2.0
 				</name>
 			<url>
-				xxxx
+				https://www.eclipse.org/legal/epl-2.0/
 				</url>
 			</license>
 		</licenses>

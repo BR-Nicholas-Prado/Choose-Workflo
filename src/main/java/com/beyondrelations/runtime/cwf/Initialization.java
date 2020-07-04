@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -82,7 +81,7 @@ public class Initialization
 		ProcessBuilder shellFactory = new ProcessBuilder(
 				asCommandSentence( runInfo ) );
 		shellFactory.directory( runInfo.getBinary()
-				.getJarFileName().getParent().toFile() );
+				.getJarFolder().toFile() );
 		shellFactory.inheritIO();
 		try
 		{
