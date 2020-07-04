@@ -1,11 +1,9 @@
 /* see ../../../../../LICENSE for release details */
-package com.beyondrelations.runtime.cwf;
+package com.beyondrelations.runtime.cwf.model;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
 
 /**
 

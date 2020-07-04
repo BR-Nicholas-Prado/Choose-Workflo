@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.beyondrelations.runtime.cwf.model.Configuration;
 import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
 import com.beyondrelations.runtime.cwf.model.WorkfloSession;
 
@@ -43,9 +44,12 @@ public class Initialization
 	{
 		Configuration info = new Configuration();
 		Path osSubstitutionAsRelative = Paths.get( "java" );
+		Path validOption = Paths.get( "D:\\Programs64b\\base\\java\\jdk_v14.0_openjdk\\bin\\java.exe" );
+		info.addJvmLocation( validOption );
 		info.addJvmLocation( osSubstitutionAsRelative );
 		MultiWorkfloRoot mwDeliveries = new MultiWorkfloRoot(
-				Paths.get( "U:\\microworxDeliveries" ), false );
+				// Paths.get( "U:\\\\microworxDeliveries" ), false );
+				Paths.get( "src\\test\\resources\\imitation" ), false );
 		// improve add abandoned gitdeliveries
 		info.addWorkfloRoot( mwDeliveries );
 
@@ -108,7 +112,7 @@ public class Initialization
 				.isMicrotoolsStyle() ? "-c" : "-p" );
 		commandComponents.add( "config"+ File.separator
 				+ runInfo.getWorkfloDbInformation().getFileName().toString() );
-		if ( ! runInfo.getBinary().isMicrotoolsStyle() )
+		if ( runInfo.getBinary().isMicrotoolsStyle() )
 		{
 			commandComponents.add( "-erp" );
 			commandComponents.add( "-am" );
