@@ -2,15 +2,13 @@
 package com.beyondrelations.runtime.cwf;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import com.beyondrelations.runtime.cwf.model.Configuration;
 import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
@@ -63,7 +61,7 @@ public class SessionViaStdin
 	{
 		final String here = cl +"cwi ";
 		SessionAspect context = SessionAspect.WF_FILE;
-		Collection<Path> wfJarsOfRoot = workfloFilesOf( wfParentChosen );
+		Collection<Path> wfJarsOfRoot = ChecksForFiles.workfloFilesOf( wfParentChosen );
 		if ( wfJarsOfRoot.isEmpty() )
 		{
 			System.out.println( "No jars in "+ wfParentChosen );
@@ -79,7 +77,7 @@ public class SessionViaStdin
 			return;
 		}
 		System.out.println( "Available jars of "+ wfParentChosen );
-		Map<String, WfPathReply> inputElements = new HashMap<>();
+		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		int ind = 0;
 		for ( Path candidate : wfJarsOfRoot )
 		{
@@ -149,7 +147,7 @@ public class SessionViaStdin
 			throw new RuntimeException( here +"no other jre exists, quit" );
 		SessionAspect context = SessionAspect.JRE_FOLDER;
 		System.out.println( "Available java binaries" );
-		Map<String, WfPathReply> inputElements = new HashMap<>();
+		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		int ind = 0;
 		for ( Path candidate : roots.getJvmLocations() )
 		{
@@ -199,7 +197,8 @@ public class SessionViaStdin
 	{
 		final String here = cl +"ccf ";
 		SessionAspect context = SessionAspect.CONFIG_FILE;
-		Collection<Path> configsForJar = configFilesOf( workfloChosen );
+		Collection<Path> configsForJar = ChecksForFiles.configFilesOf(
+				workfloChosen, wfParentChosen .isMicrotoolsStartup() );
 		if ( configsForJar.isEmpty() )
 		{
 			System.out.println( "No configs for "+ workfloChosen.getParent() );
@@ -215,7 +214,7 @@ public class SessionViaStdin
 			return;
 		}
 		System.out.println( "Available config of "+ workfloChosen.getParent() );
-		Map<String, WfPathReply> inputElements = new HashMap<>();
+		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		int ind = 0;
 		for ( Path candidate : configsForJar )
 		{
@@ -270,94 +269,6 @@ public class SessionViaStdin
 			throw new RuntimeException( here +"used non config choice, quit" );
 		else
 			chooseWorkfloInstance();
-	}
-
-
-	/** Returns paths to jars themselves */
-	private Collection<Path> workfloFilesOf( MultiWorkfloRoot base )
-	{
-		final String here = cl +"wfo ";
-		Collection<Path> relevantFolders = new LinkedList<>();
-		try
-		{
-			File[] allChildrenOfRoot = base.getRootDir().toFile().listFiles(
-					new FileFilter()
-					{
-						@Override
-						public boolean accept( File candidate )
-						{
-							return candidate.isDirectory();
-						}
-					}
-				);
-			if ( allChildrenOfRoot == null )
-				throw new RuntimeException( here +"invalid multiworkflo root, quit" );
-			else if ( allChildrenOfRoot.length == 0 )
-				throw new RuntimeException( here +"multi wf folder is empty "
-						+ base.getRootDir() +", quit" );
-			for ( File someChild : allChildrenOfRoot )
-			{
-				File[] jarsWithin = someChild.listFiles(
-						new FilenameFilter()
-						{
-							@Override
-							public boolean accept( File parentFolder, String name )
-							{
-								return name.endsWith( "jar" );
-							}
-						}
-					);
-				for ( File jar : jarsWithin )
-				{
-					relevantFolders.add( jar.toPath() );
-				}
-			}
-		}
-		catch ( SecurityException se )
-		{
-			System.err.println( here +" unable to list wf folders of "
-					+ base.getRootDir() +" because "+ se );
-		}
-		return relevantFolders;
-	}
-
-
-	private Collection<Path> configFilesOf( Path workfloJar )
-	{
-		final String here = cl +"cfo ";
-		Path base = Paths.get( workfloJar.getParent().toString(), "config" );
-		Collection<Path> relevantFiles = new LinkedList<>();
-		try
-		{
-			final String extension = wfParentChosen
-					.isMicrotoolsStartup() ? "properties" : "json";
-			File[] dbInfoWithin = base.toFile().listFiles(
-					new FilenameFilter()
-					{
-						@Override
-						public boolean accept( File parentFolder, String name )
-						{
-							return name.endsWith( extension );
-						}
-					}
-				);
-			if ( dbInfoWithin == null )
-				throw new RuntimeException( here +"config folder next to jar "
-						+ workfloJar +", quit" );
-			else if ( dbInfoWithin.length == 0 )
-				throw new RuntimeException( here +"config folder empty for jar "
-						+ workfloJar +", quit" );
-			for ( File curr : dbInfoWithin )
-			{
-				relevantFiles.add( curr.toPath() );
-			}
-		}
-		catch ( SecurityException se )
-		{
-			System.err.println( here +" unable to list wf folders of "
-					+ base +" because "+ se );
-		}
-		return relevantFiles;
 	}
 
 

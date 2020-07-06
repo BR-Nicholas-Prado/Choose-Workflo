@@ -263,7 +263,7 @@
 								true
 								</addClasspath>
 							<mainClass>
-								com.beyondelations.runtime.cwf.Initialization
+								com.beyondrelations.runtime.cwf.Initialization
 								</mainClass>
 							</manifest>
 						<manifestEntries>
@@ -293,14 +293,14 @@
 						java
 						</executable>
 					<mainClass>
-						com.beyondelations.runtime.cwf.Initialization
+						com.beyondrelations.runtime.cwf.Initialization
 						</mainClass>
 					<arguments>
 						<argument>
 							-classpath
 							</argument>
 						<argument>
-							com.beyondelations.runtime.cwf.Initialization
+							com.beyondrelations.runtime.cwf.Initialization
 							</argument>
 					</arguments>
 					</configuration>
@@ -317,7 +317,7 @@
 		Select workflo jars and configs on disk, rather than hardcoded in file or as shortcuts
 		</description>
 	<url>
-		xxxxx
+		https://github.com/BR-Nicholas-Prado/Choose-Workflo
 		</url>
 	<inceptionYear>
 		2020
@@ -364,13 +364,13 @@
 		-->
 	<scm>
 		<connection>
-			scm:git:https://github.com/Nzen/xxxxxxxxxx.git
+			scm:git:https://github.com/BR-Nicholas-Prado/Choose-Workflo
 			</connection>
 		<developerConnection>
-			scm:git:https://github.com/Nzen/xxxxxxxxxx.git
+			scm:git:git@github.com:BR-Nicholas-Prado/Choose-Workflo.git
 			</developerConnection>
 		<url>
-			https://github.com/Nzen/xxxxxxxxxx
+			https://github.com/BR-Nicholas-Prado/Choose-Workflo
 			</url>
 		</scm>
 	<!--
