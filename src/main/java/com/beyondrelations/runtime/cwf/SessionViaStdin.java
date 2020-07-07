@@ -1,11 +1,9 @@
 /* see ../../../../../LICENSE for release details */
 package com.beyondrelations.runtime.cwf;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -76,13 +74,17 @@ public class SessionViaStdin
 					context );
 			return;
 		}
-		System.out.println( "Available jars of "+ wfParentChosen );
+		System.out.println( "Available jars of "+ wfParentChosen.getRootDir() );
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
+		Object[] sortedPaths = wfJarsOfRoot.toArray();
+		Arrays.sort( sortedPaths );
+		String zeroPadStyle = wfJarsOfRoot.size() > 9 ? "%02d" : "%d";
 		int ind = 0;
-		for ( Path candidate : wfJarsOfRoot )
+		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( Integer.toString( ind ),
-					new WfPathReply( context, candidate ) );
+			inputElements.put( String.format(
+					zeroPadStyle, ind ),
+					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
 		inputElements.put( Integer.toString( ind ),
@@ -100,10 +102,17 @@ public class SessionViaStdin
 		WfPathReply userChoice = null;
 		while ( attempts > 0 )
 		{
+			System.out.print( "-- " );
 			String literalInput = input.next();
 			if ( literalInput.isEmpty() )
 				continue;
 			userChoice = inputElements.get( literalInput );
+			if ( userChoice == null
+					&& wfJarsOfRoot.size() > 9
+					&& literalInput.length() == 1 )
+			{
+				userChoice = inputElements.get( "0"+ literalInput );
+			}
 			if ( userChoice != null )
 			{
 				if ( userChoice.intention == context )
@@ -148,11 +157,15 @@ public class SessionViaStdin
 		SessionAspect context = SessionAspect.JRE_FOLDER;
 		System.out.println( "Available java binaries" );
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
+		Object[] sortedPaths = roots.getJvmLocations().toArray();
+		Arrays.sort( sortedPaths );
+		String zeroPadStyle = roots.getJvmLocations().size() > 9 ? "%02d" : "%d";
 		int ind = 0;
-		for ( Path candidate : roots.getJvmLocations() )
+		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( Integer.toString( ind ),
-					new WfPathReply( context, candidate ) );
+			inputElements.put( String.format(
+					zeroPadStyle, ind ),
+					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
 		inputElements.put( Integer.toString( ind ),
@@ -167,10 +180,17 @@ public class SessionViaStdin
 		WfPathReply userChoice = null;
 		while ( attempts > 0 )
 		{
+			System.out.print( "-- " );
 			String literalInput = input.next();
 			if ( literalInput.isEmpty() )
 				continue;
 			userChoice = inputElements.get( literalInput );
+			if ( userChoice == null
+					&& roots.getJvmLocations().size() > 9
+					&& literalInput.length() == 1 )
+			{
+				userChoice = inputElements.get( "0"+ literalInput );
+			}
 			if ( userChoice != null )
 			{
 				if ( userChoice.intention == context )
@@ -213,13 +233,18 @@ public class SessionViaStdin
 					context );
 			return;
 		}
+		
 		System.out.println( "Available config of "+ workfloChosen.getParent() );
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
+		Object[] sortedPaths = configsForJar.toArray();
+		Arrays.sort( sortedPaths );
+		String zeroPadStyle = configsForJar.size() > 9 ? "%02d" : "%d";
 		int ind = 0;
-		for ( Path candidate : configsForJar )
+		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( Integer.toString( ind ),
-					new WfPathReply( context, candidate ) );
+			inputElements.put( String.format(
+					zeroPadStyle, ind ),
+					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
 		inputElements.put( Integer.toString( ind ),
@@ -240,10 +265,17 @@ public class SessionViaStdin
 		WfPathReply userChoice = null;
 		while ( attempts > 0 )
 		{
+			System.out.print( "-- " );
 			String literalInput = input.next();
 			if ( literalInput.isEmpty() )
 				continue;
 			userChoice = inputElements.get( literalInput );
+			if ( userChoice == null
+					&& configsForJar.size() > 9
+					&& literalInput.length() == 1 )
+			{
+				userChoice = inputElements.get( "0"+ literalInput );
+			}
 			if ( userChoice != null )
 			{
 				if ( userChoice.intention != context )
@@ -344,8 +376,11 @@ public class SessionViaStdin
 				continue;
 			if ( current.location == null )
 				System.out.println( key +" - "+ current.intention.name() );
-			else if ( context != SessionAspect.WF_FILE )
+			else if ( context != SessionAspect.WF_FILE && context != SessionAspect.JRE_FOLDER )
 				System.out.println( key +" - "+ current.location.getFileName() );
+			else if ( context == SessionAspect.JRE_FOLDER )
+				System.out.println( key +" - "+ current.location
+						.getParent().getParent().getFileName() ); // N- grandparent folder bla/jre/bin/java.exe
 			else
 				System.out.println( key +" - "+ current.location
 						.getParent().getFileName() ); // N- the folder name

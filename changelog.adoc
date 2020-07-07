@@ -15,7 +15,17 @@
 
 * 
 
-== [1.0] - 20-07-04
+== [2.0] - 2020-07-06
+
+=== Added
+
+* allows selecting a single digit without typing preceeding zero
+
+=== Changed
+
+* jars, configs, jre offered in alphabetical order
+
+== [1.0] - 2020-07-04
 
 === Added
 
