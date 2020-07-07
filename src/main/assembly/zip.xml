@@ -32,18 +32,30 @@
 				${project.build.directory}/${project.artifactId}-${project.version}.jar
 				</source>
 			<outputDirectory>
-				/
+				.
 				</outputDirectory>
 			</file>
 		<file>
-			<!-- Our license -->
+			<!-- our license -->
 			<source>
-				${project.basedir}/xxxxsslicence
+				${project.basedir}/LICENSE
+				</source>
+			</file>
+		<file>
+			<!-- canon license -->
+			<source>
+				${project.basedir}/eclipse-v2.0.txt
+				</source>
+			</file>
+		<file>
+			<!-- example config -->
+			<source>
+				${project.basedir}/config.eno
 				</source>
 			</file>
 		<file>
 			<source>
-				${project.basedir}/readme.md
+				${project.basedir}/readme.adoc
 				</source>
 			</file>
 		<!--
@@ -70,7 +82,7 @@
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>
-				/
+				.
 				</outputDirectory>
 			<excludes>
 				<exclude>

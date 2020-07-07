@@ -1,0 +1,41 @@
+
+# issue 200707_0006
+
+		title : Allow choosing a different multiworkflo folder
+
+		status : to do
+
+		priority : low
+
+		assignee : Nicholas Prado
+
+		-- desc
+		While the system is able to deserialize information for several multiworkflo roots, it quits when asked to choose another.
+		-- desc
+
+	>## yyMMdd hhMM zzz
+		>comment author : 
+		>-- comment
+
+		>-- comment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

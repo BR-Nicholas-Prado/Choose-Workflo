@@ -1,0 +1,41 @@
+
+# choose workflo
+
+	jre :
+		- D:\Programs64b\base\java\jdk_v08_adopt\bin\java.exe
+		- D:\Programs64b\base\java\jdk_v11.2_openjdk\bin\java.exe
+		- D:\Programs64b\base\java\jdk_v14.0_openjdk\bin\java.exe
+
+	## multiworkflo
+
+		### project test
+
+			rootDir : src\test\resources\imitation
+			isMicrotoolsStartup : false
+
+		### deprecated
+
+			rootDir : U:\gitDeliveries
+			isMicrotoolsStartup : true
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

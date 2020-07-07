@@ -24,6 +24,17 @@
 		jar
 		</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>
+				ws.nzen.format.eno
+				</groupId>
+			<artifactId>
+				enohar
+				</artifactId>
+			<version>
+				0.0-alpha.8.0+j8
+				</version>
+			</dependency>
 		<!--
 		<dependency>
 			<groupId>
@@ -456,6 +467,35 @@
 											src/main/assembly/zip.xml
 											</descriptor>
 										</descriptors>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					<plugin>
+						<!-- Check license compatibility with dependencies -->
+						<groupId>
+							org.codehaus.mojo
+							</groupId>
+						<artifactId>
+							license-maven-plugin
+							</artifactId>
+						<version>
+							2.0.0
+							</version>
+						<executions>
+							<execution>
+								<id>
+									affirm-other-licenses
+									</id>
+								<goals>
+									<goal>
+										add-third-party
+										</goal>
+									</goals>
+								<configuration>
+									<encoding>
+										UTF-8
+										</encoding>
 									</configuration>
 								</execution>
 							</executions>

@@ -1,6 +1,7 @@
 
 = choose_workflo Changelog
 
+
 == Unreleased
 
 === Added
@@ -15,15 +16,19 @@
 
 * 
 
+
 == [2.0] - 2020-07-06
 
 === Added
 
 * allows selecting a single digit without typing preceeding zero
+* checks for config.eno to populate jre and multi-wf folders
+* requires Enohar a.0.8 as a dependency
 
 === Changed
 
 * jars, configs, jre offered in alphabetical order
+
 
 == [1.0] - 2020-07-04
 

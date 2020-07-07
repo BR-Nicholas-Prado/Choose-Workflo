@@ -3,7 +3,7 @@
 
 == Purpose
 
-choose_workflo
+choose_workflo replaces https://github.com/Nzen/JarLauncher[JarLauncher] as my preferred means of starting our binaries at work. However, this comes at the cost of being very, very specific to our contemporary folder structure.
 
 == License
 
@@ -11,11 +11,9 @@ choose_workflo is released under the terms of the Eclipse Public license v2 or l
 
 == Run
 
+`java -jar choose-workflo-2.0.jar`
 
-
-== Name
-
-choose_workflo
+If it finds a valid config.eno file next to the jar, it uses the values therein.
 
 
 

@@ -12,23 +12,42 @@ import com.beyondrelations.runtime.cwf.model.Configuration;
 import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
 import com.beyondrelations.runtime.cwf.model.WorkfloSession;
 
+import ws.nzen.format.eno.Eno;
+import ws.nzen.format.eno.FieldList;
+import ws.nzen.format.eno.Section;
+import ws.nzen.format.eno.Value;
+
 /**
 
 */
 public class Initialization
 {
 
+	private static final String defaultConfigFilename = "config.eno";
+	private static final String enoSectionMain = "choose workflo";
+	private static final String enoListJre = "jre";
+	private static final String enoSectionMultiWf = "multiworkflo";
+	private static final String enoMwfFieldDir = "rootDir";
+	private static final String enoMwfFieldIsMts = "isMicrotoolsStartup";
+
 
 	public static void main( String[] args )
 	{
-		/*
-		cli finds config source
-		build configuration with parser
-		offer choices
-			check folders
-		start workflo
-		*/
-		Initialization mainThread = new Initialization( hardCodedConfig() );
+		final String here = "<>i.m ";
+		File defaultConfig = new File( defaultConfigFilename );
+		Initialization mainThread;
+		try
+		{
+			mainThread = ! defaultConfig.exists()
+					? new Initialization( hardCodedConfig() )
+					: new Initialization( configFrom( defaultConfig ) );
+		}
+		catch ( SecurityException se )
+		{
+			System.err.println( here +"could not check if "+ defaultConfigFilename
+					+" exists because "+ se );
+			mainThread =  new Initialization( hardCodedConfig() );
+		}
 		while ( true )
 		{
 			WorkfloSession finalDecisions = mainThread.offerChoices();
@@ -53,6 +72,85 @@ public class Initialization
 		info.addWorkfloRoot( mwDeliveries );
 
 		return info;
+	}
+
+
+	private static Configuration configFrom( File hasValues )
+	{
+		final String here = "<>i.c ";
+		Configuration fallback = hardCodedConfig();
+		Section enoDoc = null;
+		try
+		{
+			enoDoc = new Eno().deserialize( hasValues.toPath() );
+		}
+		catch ( IOException ie )
+		{
+			System.err.println( here +"deserialize "+ hasValues
+					+" because "+ ie );
+			return fallback;
+		}
+		Section chwfInfo = enoDoc.optionalSection( enoSectionMain );
+		if ( chwfInfo == null )
+		{
+			System.err.println( here + hasValues +" has no  "
+						+ enoSectionMain +" section, using hardcode" );
+			return fallback;
+		}
+		Configuration suppliedInfo = new Configuration();
+		FieldList jreAvailable = chwfInfo.optionalList( enoListJre );
+		for ( String path : jreAvailable.optionalStringValues() )
+		{
+			suppliedInfo.addJvmLocation( Paths.get( path ) );
+		}
+		if ( suppliedInfo.getJvmLocations().isEmpty() )
+		{
+			System.err.println( here + hasValues +" has no  "
+					+ enoListJre +" list, using hardcode" );
+			for ( Path whatever : fallback.getJvmLocations() )
+				suppliedInfo.addJvmLocation( whatever );
+		}
+
+		Section projectRoots = chwfInfo.optionalSection( enoSectionMultiWf );
+		if ( projectRoots == null )
+		{
+			System.err.println( here + hasValues +" has no "
+					+ enoSectionMultiWf +" section, using hardcode" );
+			for ( MultiWorkfloRoot whatever : fallback.getGroupFolder() )
+				suppliedInfo.addWorkfloRoot( whatever );
+		}
+		List<Section> actualRoots = projectRoots.sections();
+		if ( actualRoots.isEmpty() )
+		{
+			System.err.println( here + hasValues +" has "
+					+ enoSectionMultiWf +" with no concrete sections, using hardcode" );
+			for ( MultiWorkfloRoot whatever : fallback.getGroupFolder() )
+				suppliedInfo.addWorkfloRoot( whatever );
+		}
+		for ( Section rootDesc : actualRoots )
+		{
+			Value wrappedPath = (Value)rootDesc.optionalField( enoMwfFieldDir );
+			Value strBool = (Value)rootDesc.optionalField( enoMwfFieldIsMts );
+			if ( wrappedPath == null || strBool == null )
+			{
+				System.out.println( here + hasValues +" has "
+						+ enoSectionMultiWf +" with "+ rootDesc.getName() +" with missing "
+						+ ( wrappedPath == null ? enoMwfFieldDir : enoMwfFieldIsMts ) );
+				continue;
+			}
+			suppliedInfo.addWorkfloRoot( new MultiWorkfloRoot(
+					Paths.get( wrappedPath.optionalStringValue() ),
+					strBool.optionalStringValue().equals( "true" ) ) );
+		}
+		if ( suppliedInfo.getGroupFolder().isEmpty() )
+		{
+			System.err.println( here + hasValues +" has "
+					+ enoSectionMultiWf +" with no valid sections, using hardcode" );
+			for ( MultiWorkfloRoot whatever : fallback.getGroupFolder() )
+				suppliedInfo.addWorkfloRoot( whatever );
+		}
+
+		return suppliedInfo;
 	}
 
 
