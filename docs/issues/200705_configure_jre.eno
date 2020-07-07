@@ -1,0 +1,41 @@
+
+# issue 200705_1226
+
+		title : Unable to configure jre
+
+		status : to do
+
+		priority : high
+
+		assignee : Nicholas Prado
+
+		-- desc
+		This is hardcoded to use one developer's jre. Allow specifying some number of jre and workflo group roots.
+		-- desc
+
+	>## yyMMdd hhMM zzz
+		>comment author : 
+		>-- comment
+
+		>-- comment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

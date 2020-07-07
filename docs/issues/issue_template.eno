@@ -1,7 +1,6 @@
 
 # issue yyMMdd_hhmm
 
-	
 		title : 
 
 		status : to do
@@ -14,7 +13,8 @@
 
 		-- desc
 
-	>		>comment author : 
+	>## yyMMdd hhMM zzz
+		>comment author : 
 		>-- comment
 
 		>-- comment
