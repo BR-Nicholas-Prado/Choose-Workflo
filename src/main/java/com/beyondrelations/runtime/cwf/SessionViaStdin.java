@@ -78,22 +78,28 @@ public class SessionViaStdin
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		Object[] sortedPaths = wfJarsOfRoot.toArray();
 		Arrays.sort( sortedPaths );
-		String zeroPadStyle = wfJarsOfRoot.size() > 9 ? "%02d" : "%d";
+		final int nonConfigOptionCount = 3, zeroPadThreshold = 9;
+		int configOptions = wfJarsOfRoot.size() + nonConfigOptionCount;
+		boolean optionsOutnumberPaddingThreshold = configOptions > zeroPadThreshold;
+		String zeroPadStyle = optionsOutnumberPaddingThreshold ? "%02d" : "%d";
 		int ind = 0;
 		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( String.format(
-					zeroPadStyle, ind ),
+			inputElements.put(
+					String.format( zeroPadStyle, ind ),
 					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.JRE_FOLDER, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.PROJECTS_FOLDER, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.UNKNOWN, null )  );
 		ind++;
 		showOptions( inputElements, context );
@@ -108,7 +114,7 @@ public class SessionViaStdin
 				continue;
 			userChoice = inputElements.get( literalInput );
 			if ( userChoice == null
-					&& wfJarsOfRoot.size() > 9
+					&& optionsOutnumberPaddingThreshold
 					&& literalInput.length() == 1 )
 			{
 				userChoice = inputElements.get( "0"+ literalInput );
@@ -159,19 +165,24 @@ public class SessionViaStdin
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		Object[] sortedPaths = roots.getJvmLocations().toArray();
 		Arrays.sort( sortedPaths );
-		String zeroPadStyle = roots.getJvmLocations().size() > 9 ? "%02d" : "%d";
+		final int nonConfigOptionCount = 2, zeroPadThreshold = 9;
+		int configOptions = roots.getJvmLocations().size() + nonConfigOptionCount;
+		boolean optionsOutnumberPaddingThreshold = configOptions > zeroPadThreshold;
+		String zeroPadStyle = optionsOutnumberPaddingThreshold ? "%02d" : "%d";
 		int ind = 0;
 		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( String.format(
-					zeroPadStyle, ind ),
+			inputElements.put(
+					String.format( zeroPadStyle, ind ),
 					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.PROJECTS_FOLDER, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.UNKNOWN, null )  );
 		ind++;
 		showOptions( inputElements, context );
@@ -186,7 +197,7 @@ public class SessionViaStdin
 				continue;
 			userChoice = inputElements.get( literalInput );
 			if ( userChoice == null
-					&& roots.getJvmLocations().size() > 9
+					&& optionsOutnumberPaddingThreshold
 					&& literalInput.length() == 1 )
 			{
 				userChoice = inputElements.get( "0"+ literalInput );
@@ -238,25 +249,32 @@ public class SessionViaStdin
 		Map<String, WfPathReply> inputElements = new TreeMap<>();
 		Object[] sortedPaths = configsForJar.toArray();
 		Arrays.sort( sortedPaths );
-		String zeroPadStyle = configsForJar.size() > 9 ? "%02d" : "%d";
+		final int nonConfigOptionCount = 4, zeroPadThreshold = 9;
+		int configOptions = configsForJar.size() + nonConfigOptionCount;
+		boolean optionsOutnumberPaddingThreshold = configOptions > zeroPadThreshold;
+		String zeroPadStyle = optionsOutnumberPaddingThreshold ? "%02d" : "%d";
 		int ind = 0;
 		for ( Object candidate : sortedPaths )
 		{
-			inputElements.put( String.format(
-					zeroPadStyle, ind ),
+			inputElements.put(
+					String.format( zeroPadStyle, ind ),
 					new WfPathReply( context, (Path)candidate ) );
 			ind++;
 		}
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.WF_FILE, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.PROJECTS_FOLDER, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.JRE_FOLDER, null )  );
 		ind++;
-		inputElements.put( Integer.toString( ind ),
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
 				new WfPathReply( SessionAspect.UNKNOWN, null )  );
 		ind++;
 		showOptions( inputElements, context );
@@ -271,7 +289,7 @@ public class SessionViaStdin
 				continue;
 			userChoice = inputElements.get( literalInput );
 			if ( userChoice == null
-					&& configsForJar.size() > 9
+					&& optionsOutnumberPaddingThreshold
 					&& literalInput.length() == 1 )
 			{
 				userChoice = inputElements.get( "0"+ literalInput );
