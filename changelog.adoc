@@ -16,6 +16,11 @@
 
 * 
 
+== [2.1] - 2020-07-20
+
+=== Changed
+
+* zero padding reflects all choosable optionss
 
 == [2.0] - 2020-07-06
 

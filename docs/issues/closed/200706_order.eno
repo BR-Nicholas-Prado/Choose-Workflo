@@ -16,6 +16,12 @@
 		That's annoying, but allowing the values to appear out of alphabetical order is actually unhelpful. Ensure they are. 
 		-- desc
 
+	## 200720 1157 CST
+		comment author : Nicholas Prado
+		-- comment
+		Whether this pads the options does not account for when adding the transition options (ex to change the jre) to the currently relevant options surpasses the zero padding threshold.
+		-- comment
+
 	>## yyMMdd hhMM zzz
 		>comment author : 
 		>-- comment
