@@ -10,10 +10,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.beyondrelations.runtime.cwf.model.Configuration;
 import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
-import com.beyondrelations.runtime.cwf.model.WorkfloRoot;
-import com.beyondrelations.runtime.cwf.model.WorkfloSession;
 
 /**
 

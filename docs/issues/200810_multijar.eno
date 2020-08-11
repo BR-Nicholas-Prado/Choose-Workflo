@@ -1,0 +1,43 @@
+
+# issue 200810_2323
+
+		title : Distinguish multiple jars
+
+		status : review
+
+		priority : medium
+
+		assignee : Nicholas Prado
+
+		-- desc
+		We've had occasions when we've decided not to replace our binary and just make a newer copy with another name.
+		However, this presents as a duplicate folder name when using choose-workflo. Provide some mechanism to
+		distinguish which is which, so we don't make a false assumption about the order they appear.
+		-- desc
+
+	>## yyMMdd hhMM zzz
+		>comment author : 
+		>-- comment
+
+		>-- comment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

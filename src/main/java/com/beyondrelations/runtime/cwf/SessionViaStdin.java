@@ -4,9 +4,12 @@ package com.beyondrelations.runtime.cwf;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.beyondrelations.runtime.cwf.model.Configuration;
 import com.beyondrelations.runtime.cwf.model.MultiWorkfloRoot;
@@ -94,7 +97,7 @@ public class SessionViaStdin
 				new WfPathReply( SessionAspect.PROJECTS_FOLDER, null )  );
 		ind++;
 		inputElements.put( Integer.toString( ind ),
-				new WfPathReply( SessionAspect.UNKNOWN, null )  );
+				new WfPathReply( SessionAspect.QUIT, null )  );
 		ind++;
 		showOptions( inputElements, context );
 		// N- harvest choice
@@ -130,6 +133,8 @@ public class SessionViaStdin
 			chooseMultiWorkfloRoot();
 		else if ( userChoice.intention == SessionAspect.JRE_FOLDER )
 			chooseJavaRuntime();
+		else if ( userChoice.intention == SessionAspect.QUIT )
+			System.exit( 1 );
 		else if ( userChoice.intention != context )
 			throw new RuntimeException( here +"used non config choice, quit" );
 		else
@@ -143,6 +148,8 @@ public class SessionViaStdin
 		// N- assuming we fell back here such that initial default isn't appropriate
 		if ( roots.getGroupFolder().size() == 1 )
 			throw new RuntimeException( here +"no other multiworkflo root exists, quit" );
+		SessionAspect context = SessionAspect.JRE_FOLDER;
+		System.out.println( "Available project roots" );
 
 		throw new RuntimeException( "cmwr not done" );
 	}
@@ -172,7 +179,7 @@ public class SessionViaStdin
 				new WfPathReply( SessionAspect.PROJECTS_FOLDER, null )  );
 		ind++;
 		inputElements.put( Integer.toString( ind ),
-				new WfPathReply( SessionAspect.UNKNOWN, null )  );
+				new WfPathReply( SessionAspect.QUIT, null )  );
 		ind++;
 		showOptions( inputElements, context );
 		// N- harvest choice
@@ -206,6 +213,8 @@ public class SessionViaStdin
 		// N- transition to next state
 		if ( userChoice.intention == SessionAspect.PROJECTS_FOLDER )
 			chooseMultiWorkfloRoot();
+		else if ( userChoice.intention == SessionAspect.QUIT )
+			System.exit( 1 );
 		else if ( userChoice.intention == context )
 			chooseWorkfloInstance();
 		else
@@ -257,7 +266,7 @@ public class SessionViaStdin
 				new WfPathReply( SessionAspect.JRE_FOLDER, null )  );
 		ind++;
 		inputElements.put( Integer.toString( ind ),
-				new WfPathReply( SessionAspect.UNKNOWN, null )  );
+				new WfPathReply( SessionAspect.QUIT, null )  );
 		ind++;
 		showOptions( inputElements, context );
 		// N- harvest choice
@@ -299,6 +308,8 @@ public class SessionViaStdin
 			chooseJavaRuntime();
 		else if ( userChoice.intention != SessionAspect.WF_FILE )
 			throw new RuntimeException( here +"used non config choice, quit" );
+		else if ( userChoice.intention == SessionAspect.QUIT )
+			System.exit( 1 );
 		else
 			chooseWorkfloInstance();
 	}
@@ -369,6 +380,20 @@ public class SessionViaStdin
 	private void showOptions(
 			Map<String, WfPathReply> inputElements, SessionAspect context )
 	{
+		// N- prep list of duplicate parents.
+		Set<Path> uniqueParents = new HashSet<>();
+		Set<Path> nonUniqueParents = new TreeSet<>();
+		for ( String key : inputElements.keySet() )
+		{
+			WfPathReply current = inputElements.get( key );
+			if ( current.location == null )
+				continue;
+			else if ( uniqueParents.contains( current.location.getParent() ) )
+				nonUniqueParents.add( current.location.getParent() );
+			else
+				uniqueParents.add( current.location.getParent() );
+		}
+		// N- actually show
 		for ( String key : inputElements.keySet() )
 		{
 			WfPathReply current = inputElements.get( key );
@@ -381,6 +406,10 @@ public class SessionViaStdin
 			else if ( context == SessionAspect.JRE_FOLDER )
 				System.out.println( key +" - "+ current.location
 						.getParent().getParent().getFileName() ); // N- grandparent folder bla/jre/bin/java.exe
+			else if ( nonUniqueParents.contains( current.location.getParent() ) )
+				System.out.println( key +" - "+ current.location
+						.getParent().getFileName() +" : "+ current.location
+						.getFileName() ); // N- the folder name
 			else
 				System.out.println( key +" - "+ current.location
 						.getParent().getFileName() ); // N- the folder name
@@ -402,6 +431,7 @@ public class SessionViaStdin
 		WF_FILE,
 		CONFIG_FILE,
 		BACK,
+		QUIT,
 		UNKNOWN
 		;
 	}
