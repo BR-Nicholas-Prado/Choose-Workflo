@@ -16,11 +16,12 @@
 
 * 
 
-== [2.2] - 2020-08-10
+== [3.0] - 2020-08-10
 
 === Changed
 
 * show jar filename when folder is not unique
+* shows list of multi root, rather than quitting
 
 == [2.1] - 2020-07-20
 
