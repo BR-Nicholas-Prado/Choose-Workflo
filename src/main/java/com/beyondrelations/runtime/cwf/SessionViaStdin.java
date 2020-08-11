@@ -156,8 +156,79 @@ public class SessionViaStdin
 			throw new RuntimeException( here +"no other multiworkflo root exists, quit" );
 		SessionAspect context = SessionAspect.PROJECTS_FOLDER;
 		System.out.println( "Available project roots" );
-
-		throw new RuntimeException( "cmwr not done" );
+		Map<String, WfPathReply> inputElements = new TreeMap<>();
+		Object[] sortedPaths = new Object[ roots.getGroupFolder().size() ];
+		for ( int ind = 0; ind < roots.getGroupFolder().size(); ind++ )
+			sortedPaths[ ind ] = roots.getGroupFolder().get( ind ).getRootDir();
+		Arrays.sort( sortedPaths );
+		final int nonConfigOptionCount = 2, zeroPadThreshold = 9;
+		int configOptions = roots.getJvmLocations().size() + nonConfigOptionCount;
+		boolean optionsOutnumberPaddingThreshold = configOptions > zeroPadThreshold;
+		String zeroPadStyle = optionsOutnumberPaddingThreshold ? "%02d" : "%d";
+		int ind = 0;
+		for ( Object candidate : sortedPaths )
+		{
+			inputElements.put(
+					String.format( zeroPadStyle, ind ),
+					new WfPathReply( context, (Path)candidate ) );
+			ind++;
+		}
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
+				new WfPathReply( SessionAspect.JRE_FOLDER, null )  );
+		ind++;
+		inputElements.put(
+				String.format( zeroPadStyle, ind ),
+				new WfPathReply( SessionAspect.QUIT, null )  );
+		ind++;
+		showOptions( inputElements, context );
+		// N- harvest choice
+		int attempts = 10;
+		WfPathReply userChoice = null;
+		InputFlow :
+		while ( attempts > 0 )
+		{
+			System.out.print( "-- " );
+			String literalInput = input.next();
+			if ( literalInput.isEmpty() )
+				continue;
+			userChoice = inputElements.get( literalInput );
+			if ( userChoice == null
+					&& optionsOutnumberPaddingThreshold
+					&& literalInput.length() == 1 )
+			{
+				userChoice = inputElements.get( "0"+ literalInput );
+			}
+			if ( userChoice != null )
+			{
+				if ( userChoice.intention == context )
+				{
+					for ( MultiWorkfloRoot candidate : roots.getGroupFolder() )
+					{
+						if ( candidate.getRootDir().equals( userChoice.location ) )
+						{
+							wfParentChosen = candidate;
+							break InputFlow;
+						}
+					}
+					throw new RuntimeException( here +"chose a forgotten location" );
+				}
+			}
+			else
+				System.out.println( "That's not a valid choice, try another" );
+			attempts--;
+		}
+		if ( attempts < 1 )
+			throw new RuntimeException( here +"ten abortive tries is enough to, quit" );
+		// N- transition to next state
+		if ( userChoice.intention == SessionAspect.JRE_FOLDER )
+			chooseJavaRuntime();
+		else if ( userChoice.intention == SessionAspect.QUIT )
+			System.exit( 1 );
+		else if ( userChoice.intention != context )
+			throw new RuntimeException( here +"used non config choice, quit" );
+		else
+			chooseWorkfloInstance();
 	}
 
 
@@ -401,15 +472,18 @@ public class SessionViaStdin
 		// N- prep list of duplicate parents.
 		Set<Path> uniqueParents = new HashSet<>();
 		Set<Path> nonUniqueParents = new TreeSet<>();
-		for ( String key : inputElements.keySet() )
+		if ( context == SessionAspect.WF_FILE )
 		{
-			WfPathReply current = inputElements.get( key );
-			if ( current.location == null )
-				continue;
-			else if ( uniqueParents.contains( current.location.getParent() ) )
-				nonUniqueParents.add( current.location.getParent() );
-			else
-				uniqueParents.add( current.location.getParent() );
+			for ( String key : inputElements.keySet() )
+			{
+				WfPathReply current = inputElements.get( key );
+				if ( current.location == null )
+					continue;
+				else if ( uniqueParents.contains( current.location.getParent() ) )
+					nonUniqueParents.add( current.location.getParent() );
+				else
+					uniqueParents.add( current.location.getParent() );
+			}
 		}
 		// N- actually show
 		for ( String key : inputElements.keySet() )
